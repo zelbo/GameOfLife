@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using ConsoleLib;
 using static ConsoleLib.NativeMethods;
 
@@ -11,6 +12,9 @@ namespace GameOfLife
 
     class Program
 	{
+		static Versions myVersion = Versions.Console;
+		//static int myVersion = (int)Versions.Console;
+		static int sleepTime = 500; // in ms
 		static void Main(string[] args)
 		{
 			/* Starting State Options
@@ -32,8 +36,9 @@ namespace GameOfLife
 				Console.WriteLine("Menu under construction. enter amount of game ticks to process.");
 				int runTime = Int32.Parse(Console.ReadLine());
 				int ticks = 0;
-				GameBoard gameBoard = new GameBoard(); // initialize game state (get input from file or user)
-				gameBoard.Draw(); // draw starting board
+				GameBoard gameBoard = new GameBoard(myVersion); // initialize game state (get input from file or user)
+				//gameBoard.Draw(); // draw starting board
+				gameBoard.InitializeBoard();
 
 				// game loop
 				bool currentInput = false;
@@ -44,6 +49,9 @@ namespace GameOfLife
 					gameBoard.ApplyChanges();
 					gameBoard.Draw();
 
+					// pause a couple ms
+					Thread.Sleep(sleepTime);
+
 					ticks++;
 					if (ticks >= runTime)
 					{
@@ -52,6 +60,7 @@ namespace GameOfLife
 					}
 				}
 
+				Console.SetCursorPosition(0, 20); // since we are going with hacky draw function
 				Console.WriteLine("Press the any key to continue.");
 				Console.ReadKey();
 				doExit = true;

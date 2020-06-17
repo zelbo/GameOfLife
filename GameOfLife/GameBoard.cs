@@ -9,6 +9,7 @@ namespace GameOfLife
 {
     public class GameBoard
 	{
+		Versions localVersion;
 		const bool STATUS_ALIVE = true;
 		const bool STATUS_DEAD = false;
 		const char DEAD_SYMBOL = ' ';
@@ -16,14 +17,15 @@ namespace GameOfLife
 		const int POPULATION_MIN = 2;
 		const int POPULATION_MAX = 3; // deceptive, actual max is this number + 1
 		public static Random random = new Random();
-		static double probability = 0.25; // between 0.0 and 1.0, fiddle with this a bit maybe
-		static int height;
-		static int width;
+		static double probability = 0.1; // between 0.0 and 1.0, fiddle with this a bit maybe
+		public static int height;
+		public static int width;
 		public bool[,] cells;
 		List<Change> changes = new List<Change>();
 		
-		public GameBoard()
+		public GameBoard(Enum myVer)
 		{
+			localVersion = (Versions)myVer;
 			height = 20;
 			width = 80;
 			cells = new bool[width, height];
@@ -39,9 +41,37 @@ namespace GameOfLife
 
 		public void Draw()
 		{
+			if (localVersion == Versions.Console)
+			{
+				// this is super fucking hacky. kind of hoping it doesn't work so i can delete this.
+				foreach (var change in changes)
+				{
+					Console.SetCursorPosition(change.x, change.y);
+					// some way to do this with ternary?
+					//condition ? consequent : alternative
+					//char symbol = (change.status ? STATUS_ALIVE : STATUS_DEAD); // nope
+					char symbol;
+					if (change.status)
+					{
+						symbol = LIVE_SYMBOL;
+					}
+					else
+					{
+						symbol = DEAD_SYMBOL;
+					}
+					Console.Write(symbol);
+				}
+
+			}
+
+
+		}
+		public void InitializeBoard()
+		{
 			// render the game board to the console
 			// stringbuilder row by row? 
 			Console.Clear();
+			Console.SetCursorPosition(0, 0); // stop scrolling
 			for (int y = 0; y < height; y++)
 			{
 				string row = "";
@@ -56,9 +86,8 @@ namespace GameOfLife
 						row += DEAD_SYMBOL;
 					}
 				}
-				Console.WriteLine(row);
+				Console.Write(row); // changed from writeline to account for blank lines due to wordwrap
 			}
-
 		}
 
 		public int CountNeighbors(int x, int y)
@@ -95,6 +124,7 @@ namespace GameOfLife
 		{
 			// push changes to the list 
 			Change change = new Change(); // is this just adding a reference to the same change each time?
+			changes.Clear(); // do this at start of check function?
 			bool cell = false;
 			for (int y = 0; y < height; y++)
 			{
@@ -154,7 +184,6 @@ namespace GameOfLife
 			{
 				cells[change.x, change.y] = change.status;
 			}
-			changes.Clear();
 		}
 	}
 }
