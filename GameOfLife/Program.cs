@@ -40,7 +40,7 @@ namespace GameOfLife
 				bool currentInput = false;
 				while (!currentInput) // depending on the use of interface devices here - in a console app
 				{
-					Console.ReadKey(); // debug
+					//Console.ReadKey(); // debug
 					gameBoard.CheckRules();
 					gameBoard.ApplyChanges();
 					gameBoard.Draw();
