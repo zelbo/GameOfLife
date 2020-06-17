@@ -96,8 +96,8 @@ namespace GameOfLife
 			// push changes to the list 
 			Change change = new Change(); // is this just adding a reference to the same change each time?
 			bool cell = false;
-            for (int y = 0; y < height; y++)
-            {
+			for (int y = 0; y < height; y++)
+			{
 				for (int x = 0; x < width; x++)
 				{
 					cell = cells[x, y];
@@ -143,15 +143,15 @@ namespace GameOfLife
 						}
 					}
 				}
-            }
+			}
 		}
 
 		public void ApplyChanges() // rename to Update()?
 		{
-            // for each change in changes, pop change and apply status to cell according to location
+			// for each change in changes, pop change and apply status to cell according to location
 			// build a pop() function: https://stackoverflow.com/questions/24855908/how-to-dequeue-element-from-a-list
-            foreach (var change in changes)
-            {
+			foreach (var change in changes)
+			{
 				cells[change.x, change.y] = change.status;
 			}
 			changes.Clear();

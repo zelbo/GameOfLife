@@ -29,9 +29,8 @@ namespace GameOfLife
 			{
 				// get input
 				// maybe this: https://stackoverflow.com/questions/57615/how-to-add-a-timeout-to-console-readline/2041489
-				Console.WriteLine("Menu under construction. enter amount of game ticks to process. (Default = 2000)");
+				Console.WriteLine("Menu under construction. enter amount of game ticks to process.");
 				int runTime = Int32.Parse(Console.ReadLine());
-				if (runTime == 0) runTime = 2000;
 				int ticks = 0;
 				GameBoard gameBoard = new GameBoard(); // initialize game state (get input from file or user)
 				gameBoard.Draw(); // draw starting board
