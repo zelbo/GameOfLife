@@ -42,10 +42,10 @@ namespace GameOfLife
 			// render the game board to the console
 			// stringbuilder row by row? 
 			Console.Clear();
-			for (int y = 0; y >= height; y++)
+			for (int y = 0; y < height; y++)
 			{
 				string row = "";
-				for (int x = 0; x >= width; x++)
+				for (int x = 0; x < width; x++)
 				{
 					if (cells[x, y])
 					{
