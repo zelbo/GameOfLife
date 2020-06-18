@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using ConsoleLib;
-using static ConsoleLib.NativeMethods;
 
 /* Conway's Game of Life
  * https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
@@ -61,33 +59,16 @@ namespace GameOfLife
 				}
 
 				Console.SetCursorPosition(0, 20); // since we are going with hacky draw function
-				Console.WriteLine("Press the any key to continue.");
-				Console.ReadKey();
-				doExit = true;
+				Console.WriteLine("Press the any key to run again, [Esc] to exit.");
+				ConsoleKeyInfo currentKey = Console.ReadKey();
+				if (currentKey.Key == ConsoleKey.Escape)
+				{
+					doExit = true;
+				}
 			}
 
 		}
 
-		static void InitConsoleListener()
-		{
-			/*
-			 * getting mouse click in console from https://stackoverflow.com/users/4454665/swdv
-			 * found here: https://stackoverflow.com/questions/1944481/console-app-mouse-click-x-y-coordinate-detection-comparison
-			 * see here for further reading: https://www.medo64.com/2013/05/console-mouse-input-in-c/
-			 * also examine raw input from microsoft:
-			 * https://docs.microsoft.com/en-us/windows/win32/inputdev/about-raw-input?redirectedfrom=MSDN
-			 * https://docs.microsoft.com/en-us/windows/win32/inputdev/raw-input?redirectedfrom=MSDN
-			 * input from xbox controller?
-			 */
-
-			IntPtr inHandle = GetStdHandle(STD_INPUT_HANDLE);
-			uint mode = 0;
-			GetConsoleMode(inHandle, ref mode);
-			mode &= ~ENABLE_QUICK_EDIT_MODE; //disable
-			mode |= ENABLE_WINDOW_INPUT; //enable (if you want)
-			mode |= ENABLE_MOUSE_INPUT; //enable
-			SetConsoleMode(inHandle, mode);
-		}
 	}
 }
 
